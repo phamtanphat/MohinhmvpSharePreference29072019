@@ -7,21 +7,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     Button mBtnDangNhap;
-    EditText mEdtTaiKhoan,mEdtMatKhau;
+    EditText mEdtTaiKhoan, mEdtMatKhau;
     CheckBox mCbLuu;
     SharedPreferences mSharedPreferences;
     SharedPreferences.Editor mEditor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
         initCache();
+        mapview();
         eventClick();
     }
 
@@ -31,10 +35,18 @@ public class MainActivity extends AppCompatActivity {
         mEdtMatKhau = findViewById(R.id.edittextMatkhau);
         mCbLuu = findViewById(R.id.checkboxLuuMatKhau);
     }
+
+    private void mapview() {
+        mEdtTaiKhoan.setText(mSharedPreferences.getString("taikhoan", ""));
+        mEdtMatKhau.setText(mSharedPreferences.getString("matkhau", ""));
+        mCbLuu.setChecked(mSharedPreferences.getBoolean("trangthai", false));
+    }
+
     private void initCache() {
-        mSharedPreferences = getSharedPreferences("CacheApp",MODE_PRIVATE);
+        mSharedPreferences = getSharedPreferences("CacheApp", MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
     }
+
     private void eventClick() {
         mBtnDangNhap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,6 +54,22 @@ public class MainActivity extends AppCompatActivity {
                 String taikhoan = mEdtTaiKhoan.getText().toString().trim();
                 String matkhau = mEdtMatKhau.getText().toString().trim();
 
+                if (taikhoan.equals("phat123") && matkhau.equals("123456")) {
+                    Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+                    if (mCbLuu.isChecked()) {
+                        mEditor.putString("taikhoan", taikhoan);
+                        mEditor.putString("matkhau", matkhau);
+                        mEditor.putBoolean("trangthai", true);
+                        mEditor.commit();
+                    } else {
+                        mEditor.remove("taikhoan");
+                        mEditor.remove("matkhau");
+                        mEditor.remove("trangthai");
+                        mEditor.commit();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
