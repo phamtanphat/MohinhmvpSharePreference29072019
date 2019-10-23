@@ -1,15 +1,14 @@
 package com.example.mohinhmvp29072019;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,13 +18,14 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences mSharedPreferences;
     SharedPreferences.Editor mEditor;
 
+    MainPresenter mainPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        initCache();
-        mapview();
+//        initCache();
+//        mapview();
         eventClick();
     }
 
@@ -34,18 +34,19 @@ public class MainActivity extends AppCompatActivity {
         mEdtTaiKhoan = findViewById(R.id.edittextTaiKhoan);
         mEdtMatKhau = findViewById(R.id.edittextMatkhau);
         mCbLuu = findViewById(R.id.checkboxLuuMatKhau);
+        mainPresenter = new MainPresenter();
     }
 
-    private void mapview() {
-        mEdtTaiKhoan.setText(mSharedPreferences.getString("taikhoan", ""));
-        mEdtMatKhau.setText(mSharedPreferences.getString("matkhau", ""));
-        mCbLuu.setChecked(mSharedPreferences.getBoolean("trangthai", false));
-    }
-
-    private void initCache() {
-        mSharedPreferences = getSharedPreferences("CacheApp", MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
-    }
+//    private void mapview() {
+//        mEdtTaiKhoan.setText(mSharedPreferences.getString("taikhoan", ""));
+//        mEdtMatKhau.setText(mSharedPreferences.getString("matkhau", ""));
+//        mCbLuu.setChecked(mSharedPreferences.getBoolean("trangthai", false));
+//    }
+//
+//    private void initCache() {
+//        mSharedPreferences = getSharedPreferences("CacheApp", MODE_PRIVATE);
+//        mEditor = mSharedPreferences.edit();
+//    }
 
     private void eventClick() {
         mBtnDangNhap.setOnClickListener(new View.OnClickListener() {
@@ -54,22 +55,24 @@ public class MainActivity extends AppCompatActivity {
                 String taikhoan = mEdtTaiKhoan.getText().toString().trim();
                 String matkhau = mEdtMatKhau.getText().toString().trim();
 
-                if (taikhoan.equals("phat123") && matkhau.equals("123456")) {
-                    Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-                    if (mCbLuu.isChecked()) {
-                        mEditor.putString("taikhoan", taikhoan);
-                        mEditor.putString("matkhau", matkhau);
-                        mEditor.putBoolean("trangthai", true);
-                        mEditor.commit();
-                    } else {
-                        mEditor.remove("taikhoan");
-                        mEditor.remove("matkhau");
-                        mEditor.remove("trangthai");
-                        mEditor.commit();
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                }
+                mainPresenter.login(taikhoan, matkhau);
+
+//                if (taikhoan.equals("phat123") && matkhau.equals("123456")) {
+//                    Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                    if (mCbLuu.isChecked()) {
+//                        mEditor.putString("taikhoan", taikhoan);
+//                        mEditor.putString("matkhau", matkhau);
+//                        mEditor.putBoolean("trangthai", true);
+//                        mEditor.commit();
+//                    } else {
+//                        mEditor.remove("taikhoan");
+//                        mEditor.remove("matkhau");
+//                        mEditor.remove("trangthai");
+//                        mEditor.commit();
+//                    }
+//                } else {
+//                    Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
