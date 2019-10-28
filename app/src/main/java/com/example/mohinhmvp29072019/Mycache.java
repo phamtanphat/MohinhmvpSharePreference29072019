@@ -32,6 +32,10 @@ public class Mycache {
 
         editor.commit();
     }
+    public void removeValue(String key) {
+        editor.remove(key);
+        editor.commit();
+    }
 
     public <T extends Object> Object getValue(String key, T defaultparam) {
         Object value = null;
@@ -43,5 +47,4 @@ public class Mycache {
         }
         return value;
     }
-
 }

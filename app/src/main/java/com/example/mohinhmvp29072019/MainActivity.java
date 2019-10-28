@@ -1,6 +1,5 @@
 package com.example.mohinhmvp29072019;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,22 +9,17 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity implements OnListenLogin{
+public class MainActivity extends AppCompatActivity implements OnListenLogin,OnListenSaveCache{
 
     Button mBtnDangNhap;
     EditText mEdtTaiKhoan, mEdtMatKhau;
     CheckBox mCbLuu;
-//    SharedPreferences mSharedPreferences;
-//    SharedPreferences.Editor mEditor;
-
     MainPresenter mainPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-//        initCache();
-//        mapview();
         eventClick();
     }
 
@@ -34,19 +28,8 @@ public class MainActivity extends AppCompatActivity implements OnListenLogin{
         mEdtTaiKhoan = findViewById(R.id.edittextTaiKhoan);
         mEdtMatKhau = findViewById(R.id.edittextMatkhau);
         mCbLuu = findViewById(R.id.checkboxLuuMatKhau);
-        mainPresenter = new MainPresenter(this);
+        mainPresenter = new MainPresenter(this,this);
     }
-
-//    private void mapview() {
-//        mEdtTaiKhoan.setText(mSharedPreferences.getString("taikhoan", ""));
-//        mEdtMatKhau.setText(mSharedPreferences.getString("matkhau", ""));
-//        mCbLuu.setChecked(mSharedPreferences.getBoolean("trangthai", false));
-//    }
-//
-//    private void initCache() {
-//        mSharedPreferences = getSharedPreferences("CacheApp", MODE_PRIVATE);
-//        mEditor = mSharedPreferences.edit();
-//    }
 
     private void eventClick() {
         mBtnDangNhap.setOnClickListener(new View.OnClickListener() {
@@ -55,25 +38,29 @@ public class MainActivity extends AppCompatActivity implements OnListenLogin{
                 String taikhoan = mEdtTaiKhoan.getText().toString().trim();
                 String matkhau = mEdtMatKhau.getText().toString().trim();
                 mainPresenter.login(taikhoan, matkhau);
-
-                if (taikhoan.equals("phat123") && matkhau.equals("123456")) {
-                    Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-
-                } else {
-                    Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                }
-
             }
         });
     }
 
     @Override
     public void loginSuccess() {
-
+        if (mCbLuu.isChecked()){
+            mainPresenter.saveLogin(mEdtTaiKhoan.getText().toString().trim(),mEdtMatKhau.getText().toString().trim(),true,this);
+        }
     }
 
     @Override
     public void loginFail() {
-        Toast.makeText(this, "That bai", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void saveSuccessFull() {
+        Toast.makeText(this, "Thanh cong", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void saveFailture(String error) {
+        Toast.makeText(this, error , Toast.LENGTH_SHORT).show();
     }
 }
