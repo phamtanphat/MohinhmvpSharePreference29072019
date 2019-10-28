@@ -10,7 +10,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnListenLogin{
 
     Button mBtnDangNhap;
     EditText mEdtTaiKhoan, mEdtMatKhau;
@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         mEdtTaiKhoan = findViewById(R.id.edittextTaiKhoan);
         mEdtMatKhau = findViewById(R.id.edittextMatkhau);
         mCbLuu = findViewById(R.id.checkboxLuuMatKhau);
-        mainPresenter = new MainPresenter();
+        mainPresenter = new MainPresenter(this);
     }
 
 //    private void mapview() {
@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String taikhoan = mEdtTaiKhoan.getText().toString().trim();
                 String matkhau = mEdtMatKhau.getText().toString().trim();
-
                 mainPresenter.login(taikhoan, matkhau);
 
 //                if (taikhoan.equals("phat123") && matkhau.equals("123456")) {
@@ -78,4 +77,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void loginSuccess() {
+        Toast.makeText(this, "Thanh cong", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void loginFail() {
+        Toast.makeText(this, "That bai", Toast.LENGTH_SHORT).show();
+    }
 }
