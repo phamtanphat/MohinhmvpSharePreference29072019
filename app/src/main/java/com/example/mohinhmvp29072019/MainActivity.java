@@ -15,8 +15,8 @@ public class MainActivity extends AppCompatActivity implements OnListenLogin{
     Button mBtnDangNhap;
     EditText mEdtTaiKhoan, mEdtMatKhau;
     CheckBox mCbLuu;
-    SharedPreferences mSharedPreferences;
-    SharedPreferences.Editor mEditor;
+//    SharedPreferences mSharedPreferences;
+//    SharedPreferences.Editor mEditor;
 
     MainPresenter mainPresenter;
     @Override
@@ -56,22 +56,12 @@ public class MainActivity extends AppCompatActivity implements OnListenLogin{
                 String matkhau = mEdtMatKhau.getText().toString().trim();
                 mainPresenter.login(taikhoan, matkhau);
 
-//                if (taikhoan.equals("phat123") && matkhau.equals("123456")) {
-//                    Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
-//                    if (mCbLuu.isChecked()) {
-//                        mEditor.putString("taikhoan", taikhoan);
-//                        mEditor.putString("matkhau", matkhau);
-//                        mEditor.putBoolean("trangthai", true);
-//                        mEditor.commit();
-//                    } else {
-//                        mEditor.remove("taikhoan");
-//                        mEditor.remove("matkhau");
-//                        mEditor.remove("trangthai");
-//                        mEditor.commit();
-//                    }
-//                } else {
-//                    Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-//                }
+                if (taikhoan.equals("phat123") && matkhau.equals("123456")) {
+                    Toast.makeText(MainActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(MainActivity.this, "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                }
 
             }
         });
@@ -79,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnListenLogin{
 
     @Override
     public void loginSuccess() {
-        Toast.makeText(this, "Thanh cong", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
